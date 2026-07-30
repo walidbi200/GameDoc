@@ -1,0 +1,10 @@
+disallowed-methods = [
+    "std::fs::write",
+    "std::fs::remove_file",
+    "std::fs::remove_dir",
+    "std::fs::remove_dir_all",
+    "std::process::Command::new",
+    "std::process::Command::output",
+    "std::process::Command::status",
+    "std::process::Command::spawn"
+]

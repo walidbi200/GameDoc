@@ -1,0 +1,30 @@
+pkgname=gamedoc
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Deterministic, read-only Linux gaming diagnostics"
+arch=('x86_64')
+url="https://github.com/walidbi200/GameDoc"
+license=('MIT')
+depends=('glibc' 'gcc-libs')
+makedepends=('cargo')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/walidbi200/GameDoc/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  export CARGO_TARGET_DIR=target
+  cargo build --frozen --release --all-features
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo test --frozen --all-features
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -Dm0755 -t "$pkgdir/usr/bin/" "target/release/$pkgname"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
