@@ -134,9 +134,7 @@ pub struct Trace {
 mod tests {
     use serde_json::json;
 
-    use super::{
-        Category, Check, Confidence, Evidence, EvidenceSource, Fact, Report, Status,
-    };
+    use super::{Category, Check, Confidence, Evidence, EvidenceSource, Fact, Report, Status};
 
     #[test]
     fn report_uses_current_schema_version() {

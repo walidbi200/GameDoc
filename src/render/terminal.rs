@@ -16,10 +16,7 @@ pub fn print_report(report: &Report, sanitize: bool, debug: bool) {
 
     // Header
     println!("{rule}");
-    println!(
-        " GameDoc {}  ·  Linux Gaming Diagnostics",
-        report.version
-    );
+    println!(" GameDoc {}  ·  Linux Gaming Diagnostics", report.version);
     println!("{rule}");
 
     if report.facts.is_empty() && report.checks.is_empty() && report.problems.is_empty() {
