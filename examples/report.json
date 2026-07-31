@@ -1,0 +1,28 @@
+{
+  "schema": "gamedoc.v1",
+  "gamedoc_version": "0.1.0",
+  "facts": [
+    {
+      "id": "system.session_type",
+      "category": "system",
+      "value": "wayland",
+      "confidence": "detected",
+      "source": {
+        "collector": "system",
+        "method": {"type": "environment", "target": "desktop session type"}
+      }
+    },
+    {
+      "id": "steam.proton_version",
+      "category": "steam",
+      "value": {"installation": "native", "name": "Proton Experimental"},
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {"type": "path", "target": "Steam common directory"}
+      }
+    }
+  ],
+  "problems": [],
+  "diagnostics": []
+}

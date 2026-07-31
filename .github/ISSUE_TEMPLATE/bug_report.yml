@@ -1,0 +1,41 @@
+name: Bug report
+description: Report incorrect, unsafe, or nondeterministic behavior
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Review reports before posting. Use `gamedoc --share` when attaching output publicly.
+  - type: input
+    id: version
+    attributes:
+      label: GameDoc version
+      placeholder: gamedoc 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: distribution
+    attributes:
+      label: Linux distribution
+      placeholder: Fedora 44
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened?
+      description: Include expected and actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: report
+    attributes:
+      label: Privacy-reviewed report
+      description: Optional output from `gamedoc --share`. Do not include secrets.
+      render: text

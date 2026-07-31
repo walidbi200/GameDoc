@@ -1,0 +1,19 @@
+{
+  "commands": [
+    {"program":"uname","args":["-r"],"stdout":"6.9.0-test\n","stderr":"","exit_code":0},
+    {"program":"uname","args":["-m"],"stdout":"x86_64\n","stderr":"","exit_code":0},
+    {"program":"lspci","args":["-mm"],"stdout":"","stderr":"","exit_code":0},
+    {"program":"vulkaninfo","args":["--summary"],"stdout":"Vulkan\n","stderr":"","exit_code":0},
+    {"program":"glxinfo","args":["-B"],"stdout":"","stderr":"","exit_code":0},
+    {"program":"gamemoded","args":["-s"],"stdout":"gamemode is active\n","stderr":"","exit_code":0}
+  ],
+  "executables": [
+    {"name":"steam","path":"/usr/bin/steam"},
+    {"name":"gamemoderun","path":"/usr/bin/gamemoderun"},
+    {"name":"gamemoded","path":"/usr/bin/gamemoded"}
+  ],
+  "environment": [
+    {"name":"HOME","value":"/home/tester"},
+    {"name":"XDG_SESSION_TYPE","value":"wayland"}
+  ]
+}

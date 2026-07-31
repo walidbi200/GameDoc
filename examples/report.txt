@@ -1,0 +1,8 @@
+GameDoc 0.1.0
+Schema: gamedoc.v1
+
+Facts:
+  system.session_type: wayland (Detected)
+  steam.proton_version: {"installation":"native","name":"Proton Experimental"} (Detected)
+
+No problems detected from available evidence.

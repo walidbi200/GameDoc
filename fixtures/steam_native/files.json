@@ -1,0 +1,16 @@
+{
+  "files": [
+    {"path":"/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor","content":"performance\n"},
+    {"path":"/home/tester/.local/share/Steam/steamapps/libraryfolders.vdf","content":"\"path\" \"/games/SteamLibrary\"\n"},
+    {"path":"/usr/lib64/libgamemode.so.0","content":""}
+  ],
+  "directories": [
+    {"path":"/home/tester/.local/share/Steam","entries":["compatibilitytools.d","steamapps"]},
+    {"path":"/home/tester/.local/share/Steam/steamapps","entries":["common","libraryfolders.vdf"]},
+    {"path":"/home/tester/.local/share/Steam/steamapps/common","entries":["Proton Experimental"]},
+    {"path":"/home/tester/.local/share/Steam/compatibilitytools.d","entries":["GE-Proton10-1"]},
+    {"path":"/games/SteamLibrary/steamapps","entries":["common"]},
+    {"path":"/games/SteamLibrary/steamapps/common","entries":["Proton Hotfix"]}
+  ],
+  "unreadable_directories": []
+}

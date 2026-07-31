@@ -14,7 +14,13 @@
 
 use std::io::Read as _;
 use std::thread;
+<<<<<<< HEAD
 use std::time::{Duration, Instant};
+=======
+use std::time::Duration;
+
+use wait_timeout::ChildExt as _;
+>>>>>>> 2109919 (v0.2.0)
 
 use crate::errors::CollectError;
 
@@ -30,8 +36,11 @@ pub struct CommandOutput {
     pub stderr: String,
     /// Exit code, or `None` if the process was terminated by a signal.
     pub exit_code: Option<i32>,
+<<<<<<< HEAD
     /// How long the command took to execute.
     pub duration_ms: u64,
+=======
+>>>>>>> 2109919 (v0.2.0)
 }
 
 impl CommandOutput {
@@ -63,6 +72,7 @@ pub trait CommandRunner: Send + Sync {
 
 /// A [`CommandRunner`] that executes real child processes.
 ///
+<<<<<<< HEAD
 /// Processes are polled with [`std::process::Child::try_wait`] on a 50 ms
 /// interval.  When the timeout elapses the child is killed and reaped before
 /// [`CollectError::CommandTimeout`] is returned.
@@ -73,6 +83,14 @@ pub trait CommandRunner: Send + Sync {
 /// produce output larger than the OS pipe buffer (~64 KB on Linux) may stall
 /// waiting for the buffer to drain.  In practice, `GameDoc`'s diagnostics
 /// commands produce far less than that.
+=======
+/// Uses `wait_timeout` to enforce wall-clock timeouts without busy-waiting.
+/// When the timeout elapses the child is killed and reaped before
+/// [`CollectError::CommandTimeout`] is returned.
+///
+/// Standard output and standard error are read on dedicated threads so large
+/// output cannot block process exit.
+>>>>>>> 2109919 (v0.2.0)
 #[derive(Clone, Debug)]
 pub struct ProcessCommandRunner {
     timeout: Duration,
@@ -101,11 +119,17 @@ impl Default for ProcessCommandRunner {
 }
 
 impl CommandRunner for ProcessCommandRunner {
+<<<<<<< HEAD
     #[allow(clippy::disallowed_methods)]
     fn run(&self, program: &str, args: &[&str]) -> Result<CommandOutput, CollectError> {
         use std::process::{Command, Stdio};
 
         let start_time = Instant::now();
+=======
+    fn run(&self, program: &str, args: &[&str]) -> Result<CommandOutput, CollectError> {
+        use std::process::{Command, Stdio};
+
+>>>>>>> 2109919 (v0.2.0)
         let mut child = Command::new(program)
             .args(args)
             .stdout(Stdio::piped())
@@ -121,6 +145,7 @@ impl CommandRunner for ProcessCommandRunner {
                 }
             })?;
 
+<<<<<<< HEAD
         let deadline = Instant::now() + self.timeout;
 
         let exit_status = loop {
@@ -155,16 +180,65 @@ impl CommandRunner for ProcessCommandRunner {
             err.read_to_string(&mut stderr)
                 .map_err(|source| CollectError::CommandIo { source })?;
         }
+=======
+        let stdout = child.stdout.take().map(|mut pipe| {
+            thread::spawn(move || {
+                let mut bytes = Vec::new();
+                pipe.read_to_end(&mut bytes).map(|_| bytes)
+            })
+        });
+        let stderr = child.stderr.take().map(|mut pipe| {
+            thread::spawn(move || {
+                let mut bytes = Vec::new();
+                pipe.read_to_end(&mut bytes).map(|_| bytes)
+            })
+        });
+
+        let Some(exit_status) = child
+            .wait_timeout(self.timeout)
+            .map_err(|source| CollectError::CommandIo { source })?
+        else {
+            child.kill().ok();
+            child.wait().ok();
+            return Err(CollectError::CommandTimeout {
+                program: program.to_owned(),
+                args: args.join(" "),
+                timeout: self.timeout,
+            });
+        };
+
+        let stdout = join_output(stdout)?;
+        let stderr = join_output(stderr)?;
+>>>>>>> 2109919 (v0.2.0)
 
         Ok(CommandOutput {
             stdout,
             stderr,
             exit_code: exit_status.code(),
+<<<<<<< HEAD
             duration_ms: u64::try_from(start_time.elapsed().as_millis()).unwrap_or(u64::MAX),
+=======
+>>>>>>> 2109919 (v0.2.0)
         })
     }
 }
 
+<<<<<<< HEAD
+=======
+fn join_output(
+    reader: Option<thread::JoinHandle<std::io::Result<Vec<u8>>>>,
+) -> Result<String, CollectError> {
+    let Some(reader) = reader else {
+        return Ok(String::new());
+    };
+    let bytes = reader
+        .join()
+        .map_err(|_| CollectError::CommandCaptureThread)?
+        .map_err(|source| CollectError::CommandIo { source })?;
+    Ok(String::from_utf8_lossy(&bytes).into_owned())
+}
+
+>>>>>>> 2109919 (v0.2.0)
 #[cfg(test)]
 mod tests {
     use std::time::Duration;
@@ -240,23 +314,54 @@ mod tests {
             stdout: String::new(),
             stderr: String::new(),
             exit_code: Some(0),
+<<<<<<< HEAD
             duration_ms: 0,
+=======
+>>>>>>> 2109919 (v0.2.0)
         };
         let failing = CommandOutput {
             stdout: String::new(),
             stderr: String::new(),
             exit_code: Some(1),
+<<<<<<< HEAD
             duration_ms: 0,
+=======
+>>>>>>> 2109919 (v0.2.0)
         };
         let signalled = CommandOutput {
             stdout: String::new(),
             stderr: String::new(),
             exit_code: None,
+<<<<<<< HEAD
             duration_ms: 0,
+=======
+>>>>>>> 2109919 (v0.2.0)
         };
 
         assert!(passing.success());
         assert!(!failing.success());
         assert!(!signalled.success());
     }
+<<<<<<< HEAD
+=======
+
+    #[test]
+    fn large_output_does_not_block_child_exit() {
+        let output = runner()
+            .run("seq", &["1", "50000"])
+            .expect("large output should be drained while the child runs");
+
+        assert!(output.success());
+        assert!(output.stdout.len() > 64 * 1024);
+    }
+
+    #[test]
+    fn invalid_utf8_is_decoded_lossily() {
+        let output = runner()
+            .run("printf", &["\\377"])
+            .expect("invalid UTF-8 output should still be captured");
+
+        assert!(output.stdout.contains('\u{fffd}'));
+    }
+>>>>>>> 2109919 (v0.2.0)
 }

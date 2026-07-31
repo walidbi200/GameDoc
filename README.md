@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # GameDoc 🩺
 
 [![Crates.io](https://img.shields.io/crates/v/gamedoc.svg)](https://crates.io/crates/gamedoc)
@@ -197,3 +198,157 @@ GameDoc officially supports and is tested against:
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
+=======
+# GameDoc
+
+GameDoc is a deterministic, read-only Linux gaming diagnostics tool. It
+collects local evidence and produces a standardized report for GitHub issues,
+Reddit, Discord, Matrix, forums, and support tickets.
+
+GameDoc does not optimize, benchmark, repair, or configure the system.
+
+> Demo GIF placeholder: `docs/demo.gif` will be added after the first public
+> binary release establishes the final terminal capture workflow.
+
+## What It Reports
+
+- Kernel, architecture, desktop session, and CPU governor
+- CPU vendor, model, core count, architecture, and virtualization flags
+- Distribution name, ID, version, and family (from `/etc/os-release`)
+- GPU devices, Vulkan probe status, OpenGL renderer, and OpenGL version
+- Native, Flatpak, and Snap Steam installations
+- Repeated Steam libraries, Proton runtimes, and custom compatibility tools
+- MangoHud executable, config, and environment evidence
+- GameMode executable, daemon status, libraries, and config
+- Evidence-backed problems and incomplete observations
+
+See [examples/report.txt](examples/report.txt),
+[examples/report.md](examples/report.md), and
+[examples/report.json](examples/report.json).
+
+## Safety and Privacy
+
+GameDoc is read-only. It never requires root, writes configuration, installs
+packages, starts services, launches Steam, invokes a shell, contacts the
+network, or sends telemetry.
+
+All output modes pass through privacy finalization before rendering. Reports do
+not include usernames, home paths, hostnames, Steam account IDs, environment
+variable values, launch arguments, raw stderr, or secrets. `--share` is stricter
+and omits collector diagnostics entirely.
+
+Review a report before posting it. Hardware model names, installed tools,
+kernel versions, and other diagnostic facts are intentionally included.
+
+## Installation
+
+### Build From Source
+
+GameDoc v0.1.0 requires Rust 1.74 or newer.
+
+```bash
+# From a GameDoc source checkout:
+cargo build --release
+./target/release/gamedoc --share
+```
+
+GameDoc is not yet distributed through a package manager.
+
+## Usage
+
+```text
+gamedoc                        terminal report with privacy-safe diagnostics
+gamedoc --share                terminal report without collector diagnostics
+gamedoc --no-color             terminal report without ANSI colour
+gamedoc --format markdown      GitHub-flavored Markdown
+gamedoc --format json          stable gamedoc.v1 JSON
+gamedoc --share --format json  shareable JSON
+gamedoc completions bash       print Bash completion script
+gamedoc completions zsh        print Zsh completion script
+gamedoc completions fish       print Fish completion script
+gamedoc man                    print the man page in roff format
+gamedoc --version
+gamedoc --help
+```
+
+Colour output is suppressed automatically when the `NO_COLOR` environment
+variable is set, or explicitly with `--no-color`.
+
+GameDoc writes reports to standard output and does not create files. Redirect
+output only when you explicitly want a file:
+
+```bash
+gamedoc --format markdown > report.md
+gamedoc --format json > report.json
+```
+
+## JSON Contract
+
+The public schema is `gamedoc.v1`:
+
+```json
+{
+  "schema": "gamedoc.v1",
+  "gamedoc_version": "0.1.0",
+  "facts": [],
+  "problems": [],
+  "checks": []
+}
+```
+
+Within v1, changes are additive. Existing fields and stable IDs are not renamed
+or removed. Consumers should ignore unknown fields.
+
+## Limitations
+
+- Vulkan execution evidence depends on `vulkaninfo` being installed.
+- OpenGL evidence depends on `glxinfo` and a usable display session.
+- Steam library parsing supports the quoted `path` entries used by current
+  `libraryfolders.vdf` files; malformed metadata is treated as incomplete.
+- GameMode daemon status depends on `gamemoded -s` being available.
+- Absence of evidence is not treated as proof that software is absent.
+- GameDoc currently targets Linux only.
+
+## Performance
+
+GameDoc runs in parallel across all collectors. Median execution time on modern hardware is under **0.7 seconds**. Runs may occasionally stretch to ~2.7 seconds if a collector times out (e.g., missing daemons or unreadable configurations gracefully timing out at the 2.5s limit). See [BENCHMARKS.md](BENCHMARKS.md).
+
+## What GameDoc does not do (yet)
+
+- Optimize game performance
+- Automatically apply recommended fixes
+- Upload reports automatically
+
+## Supply Chain
+
+GameDoc binaries are built using reproducible builds on GitHub Actions, audited with `cargo-audit`, dependencies validated with `cargo-deny`, and release artifacts signed using keyless sigstore (`cosign`). An SBOM (CycloneDX) is provided with every release.
+
+## Development
+
+The architecture is governed by [ARCHITECTURE.md](ARCHITECTURE.md). Read it
+before changing collection, facts, rules, synthesis, reports, or rendering.
+
+```bash
+cargo fmt --check
+cargo clippy --all-targets --all-features -- -D warnings
+cargo test --all-targets --all-features
+cargo test --doc
+cargo build --release
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for fixture and golden-test workflows.
+
+## Project Documents
+
+- [Architecture](ARCHITECTURE.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security and privacy](SECURITY.md)
+- [FAQ](FAQ.md)
+- [Roadmap](ROADMAP.md)
+- [Changelog](CHANGELOG.md)
+- [Release checklist](RELEASE.md)
+
+## License
+
+GameDoc is available under the [MIT License](LICENSE).
+>>>>>>> 2109919 (v0.2.0)

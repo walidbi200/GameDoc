@@ -2,6 +2,7 @@ name: CI
 
 on:
   push:
+<<<<<<< HEAD
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
@@ -43,3 +44,47 @@ jobs:
 
     - name: Build Release
       run: cargo build --release
+=======
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Stable quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: dtolnay/rust-toolchain@a54c7afa936fefeb4456b2dd8068152669aa8203
+        with:
+          toolchain: stable
+          components: clippy,rustfmt
+      - name: Audit dependencies
+        uses: rustsec/audit-check@1795c645b2b2b1a134a4d6f0f5cf40cebcaf0d74
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deny
+        uses: EmbarkStudios/cargo-deny-action@3f4a782664881cf5725d0aafdd8f4f4e18b456bd
+      - name: Format
+        run: cargo fmt --check
+      - name: Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+      - name: Tests
+        run: cargo test --all-targets --all-features
+      - name: Documentation tests
+        run: cargo test --doc
+      - name: Release build
+        run: cargo build --release
+
+  msrv:
+    name: Rust 1.74 MSRV
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: dtolnay/rust-toolchain@a54c7afa936fefeb4456b2dd8068152669aa8203
+        with:
+          toolchain: 1.74.0
+      - name: Check MSRV
+        run: cargo check --all-targets --all-features --locked
+>>>>>>> 2109919 (v0.2.0)

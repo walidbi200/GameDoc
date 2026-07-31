@@ -1,0 +1,10 @@
+{
+  "files": [
+    {"path":"/home/private-user/.local/share/Steam/steamapps/libraryfolders.vdf","content":"\"path\" \"/games/private\"\n"}
+  ],
+  "directories": [
+    {"path":"/home/private-user/.local/share/Steam","entries":["steamapps"]},
+    {"path":"/home/private-user/.local/share/Steam/steamapps","entries":["libraryfolders.vdf"]}
+  ],
+  "unreadable_directories": ["/games/private/steamapps"]
+}

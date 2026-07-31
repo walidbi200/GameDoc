@@ -5,6 +5,10 @@
 //! system** — it only operates on the data structures defined in
 //! [`crate::model`].
 
+<<<<<<< HEAD
+=======
+pub mod color;
+>>>>>>> 2109919 (v0.2.0)
 pub mod json;
 pub mod markdown;
 pub mod terminal;

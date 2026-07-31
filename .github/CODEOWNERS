@@ -1,0 +1,28 @@
+# CODEOWNERS
+#
+# Listed owners are requested as reviewers on pull requests that touch the
+# corresponding paths.  At least one owner must approve before merging.
+#
+# Syntax: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Catch-all: all files not matched below
+*                        @walidbi200
+
+# Architecture document — review all changes carefully
+ARCHITECTURE.md          @walidbi200
+
+# Public JSON schema, model, and serialisation
+src/model.rs             @walidbi200
+src/facts.rs             @walidbi200
+src/ids.rs               @walidbi200
+
+# Rule evaluation and problem synthesis — correctness-sensitive
+src/rules.rs             @walidbi200
+src/synthesize.rs        @walidbi200
+
+# Platform I/O boundary — any new capability requires design review
+src/probe.rs             @walidbi200
+src/collect/command.rs   @walidbi200
+
+# CI and release configuration
+.github/workflows/       @walidbi200

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //! JSON renderer.
 //!
 //! Serializes a [`crate::model::Report`] as pretty-printed JSON.
@@ -5,11 +6,15 @@
 //! The schema is designed to be stable for downstream consumers, and is
 //! versioned via the `schema` field. Consumers of the JSON output
 //! should check `schema` before parsing.
+=======
+//! Stable JSON rendering for finalized reports.
+>>>>>>> 2109919 (v0.2.0)
 
 use anyhow::{Context, Result};
 
 use crate::model::Report;
 
+<<<<<<< HEAD
 /// Renders a report as a pretty-printed JSON string.
 ///
 /// The caller is responsible for writing the output (e.g. via `print!`).
@@ -23,12 +28,36 @@ pub fn render_report(report: &Report) -> Result<String> {
         serde_json::to_string_pretty(report).context("failed to serialize report to JSON")?;
     // Ensure the output ends with a newline so that shell redirects produce
     // well-formed text files.
+=======
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct ReportWithSchema<'a> {
+    schema_url: &'a str,
+    #[serde(flatten)]
+    report: &'a Report,
+}
+
+/// Serialize a finalized report using the public JSON schema.
+///
+/// # Errors
+///
+/// Returns an error if the report cannot be serialized.
+pub fn render_report(report: &Report) -> Result<String> {
+    let wrapper = ReportWithSchema {
+        schema_url: "https://raw.githubusercontent.com/walidbi200/GameDoc/main/schema/gamedoc.v2.schema.json",
+        report,
+    };
+    let mut json =
+        serde_json::to_string_pretty(&wrapper).context("failed to serialize report to JSON")?;
+>>>>>>> 2109919 (v0.2.0)
     json.push('\n');
     Ok(json)
 }
 
 #[cfg(test)]
 mod tests {
+<<<<<<< HEAD
     use serde_json::Value;
 
     use crate::model::{Category, Check, Confidence, Evidence, EvidenceSource, Report, Status};
@@ -112,5 +141,32 @@ mod tests {
             .as_str()
             .expect("confidence should be a string");
         assert_eq!(confidence, "unknown");
+=======
+    use crate::facts::FactBuilder;
+    use crate::model::Report;
+
+    use super::render_report;
+
+    #[test]
+    fn empty_report_matches_semantic_golden() {
+        let report = Report::new(FactBuilder::new().build(), Vec::new(), Vec::new());
+        let output = render_report(&report).unwrap();
+
+        assert_eq!(
+            output,
+            concat!(
+                "{\n",
+                "  \"schema_url\": \"https://raw.githubusercontent.com/walidbi200/GameDoc/main/schema/gamedoc.v2.schema.json\",\n",
+                "  \"schema\": \"gamedoc.v2\",\n",
+                "  \"gamedoc_version\": \"",
+                env!("CARGO_PKG_VERSION"),
+                "\",\n",
+                "  \"facts\": [],\n",
+                "  \"problems\": [],\n",
+                "  \"checks\": []\n",
+                "}\n"
+            )
+        );
+>>>>>>> 2109919 (v0.2.0)
     }
 }

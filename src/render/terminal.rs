@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //! Terminal (human-readable) report renderer.
 //!
 //! Output groups facts and checks by category, prefixes each check with a status icon,
@@ -203,10 +204,79 @@ pub fn sanitize_text(text: &str, sanitize: bool, home: Option<&str>) -> String {
 
 fn home_dir_string() -> Option<String> {
     std::env::var("HOME").ok().filter(|s| !s.is_empty())
+=======
+//! Colourful terminal rendering for finalized reports.
+
+use std::fmt::Write as _;
+
+use crate::model::Report;
+use crate::render::color;
+
+#[must_use]
+pub fn render_report(report: &Report) -> String {
+    let mut out = String::new();
+    let _ = writeln!(out, "GameDoc {}", report.gamedoc_version);
+    let _ = writeln!(out, "Schema: {}\n", report.schema);
+
+    if report.facts.is_empty() {
+        out.push_str("No facts were collected.\n");
+    } else {
+        let _ = writeln!(out, "{}", color::bold("Facts:"));
+        for fact in &report.facts {
+            let value = match &fact.value {
+                serde_json::Value::String(value) => value.clone(),
+                value => value.to_string(),
+            };
+            let _ = writeln!(out, "  {}: {} ({})", fact.id, value, fact.confidence);
+        }
+    }
+
+    out.push('\n');
+    if report.problems.is_empty() {
+        out.push_str("No problems detected from available evidence.\n");
+    } else {
+        let _ = writeln!(out, "{}", color::bold("Problems:"));
+        let distro = report.distro_family();
+        for problem in &report.problems {
+            let severity_label = color::severity(problem.severity);
+            let _ = writeln!(
+                out,
+                "  [{}] {}: {}",
+                severity_label, problem.id, problem.summary
+            );
+            for detail in &problem.details {
+                let _ = writeln!(out, "    {detail}");
+            }
+            if let Some(recommendation) = &problem.recommendation {
+                let _ = writeln!(
+                    out,
+                    "    {} {}",
+                    color::bold("Recommendation:"),
+                    recommendation.for_distro(distro)
+                );
+            }
+        }
+    }
+
+    if !report.checks.is_empty() {
+        out.push('\n');
+        let _ = writeln!(out, "{}", color::bold("Incomplete observations:"));
+        for diagnostic in &report.checks {
+            let _ = writeln!(
+                out,
+                "  {} ({}): {}",
+                diagnostic.collector, diagnostic.operation, diagnostic.message
+            );
+        }
+    }
+
+    out
+>>>>>>> 2109919 (v0.2.0)
 }
 
 #[cfg(test)]
 mod tests {
+<<<<<<< HEAD
     use super::{display_name, group_by_category, sanitize_text, status_icon};
     use crate::model::{Category, Check, Confidence, Evidence, EvidenceSource, Status};
 
@@ -306,5 +376,80 @@ mod tests {
         let grouped = group_by_category(&checks);
         let total: usize = grouped.values().map(Vec::len).sum();
         assert_eq!(total, 2);
+=======
+    use crate::facts::FactBuilder;
+    use crate::model::Report;
+
+    use super::render_report;
+
+    #[test]
+    fn empty_report_matches_presentation_golden() {
+        let report = Report::new(FactBuilder::new().build(), Vec::new(), Vec::new());
+        let rendered = render_report(&report);
+        let plain: String = rendered
+            .chars()
+            .filter(|&c| c != '\x1b')
+            .collect::<String>()
+            .replace("\x1b[0m", "")
+            .replace("\x1b[1m", "")
+            .replace("\x1b[2m", "")
+            .replace("\x1b[31m", "")
+            .replace("\x1b[32m", "")
+            .replace("\x1b[33m", "");
+        assert_eq!(
+            plain,
+            concat!(
+                "GameDoc 0.2.0\n",
+                "Schema: gamedoc.v2\n\n",
+                "No facts were collected.\n\n",
+                "No problems detected from available evidence.\n"
+            )
+        );
+    }
+
+    #[test]
+    fn distro_aware_recommendation_picks_correct_platform() {
+        use crate::facts::{Category, Fact, FactSource, ObservationMethod};
+        use crate::ids::{collector, fact, problem};
+        use crate::model::{Problem, Recommendation, Severity};
+        use std::collections::BTreeMap;
+
+        let mut builder = FactBuilder::new();
+        builder.append([Fact::observed(
+            fact::DISTRO_FAMILY,
+            Category::Distro,
+            "fedora",
+            FactSource {
+                collector: collector::DISTRO,
+                method: ObservationMethod::File("/etc/os-release".to_owned()),
+            },
+        )]);
+
+        let problem = Problem {
+            id: problem::VULKAN_UNAVAILABLE,
+            category: Category::Gpu,
+            severity: Severity::Critical,
+            summary: "Vulkan unavailable".to_owned(),
+            details: Vec::new(),
+            recommendation: Some(Recommendation {
+                text: "Vulkan is not available.".to_owned(),
+                platform_specific: BTreeMap::from([(
+                    "fedora".to_owned(),
+                    "dnf install vulkan-tools".to_owned(),
+                )]),
+                difficulty: 1,
+                est_minutes: 1,
+                requires_root: true,
+                requires_reboot: false,
+                docs_url: None,
+            }),
+        };
+
+        let report = Report::new(builder.build(), vec![problem], Vec::new());
+        let rendered = render_report(&report);
+
+        assert!(rendered.contains("dnf install vulkan-tools"));
+        assert!(!rendered.contains("Vulkan is not available."));
+>>>>>>> 2109919 (v0.2.0)
     }
 }

@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "directories": [
+    {"path":"/home/tester/.var/app/com.valvesoftware.Steam/data/Steam","entries":["steamapps"]},
+    {"path":"/home/tester/.var/app/com.valvesoftware.Steam/data/Steam/steamapps","entries":["common"]},
+    {"path":"/home/tester/.var/app/com.valvesoftware.Steam/data/Steam/steamapps/common","entries":["Proton Experimental"]}
+  ],
+  "unreadable_directories": []
+}

@@ -1,0 +1,11 @@
+{
+  "commands": [
+    {"program":"uname","args":["-r"],"stdout":"6.9.0-test\n","stderr":"","exit_code":0},
+    {"program":"uname","args":["-m"],"stdout":"x86_64\n","stderr":"","exit_code":0},
+    {"program":"lspci","args":["-mm"],"stdout":"","stderr":"","exit_code":0},
+    {"program":"vulkaninfo","args":["--summary"],"stdout":"Vulkan\n","stderr":"","exit_code":0},
+    {"program":"glxinfo","args":["-B"],"stdout":"","stderr":"","exit_code":0}
+  ],
+  "executables": [{"name":"steam","path":"/usr/bin/steam"}],
+  "environment": [{"name":"HOME","value":"/home/tester"}]
+}

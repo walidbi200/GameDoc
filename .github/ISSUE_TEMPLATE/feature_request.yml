@@ -1,0 +1,26 @@
+name: Feature request
+description: Propose a read-only diagnostic capability
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Diagnostic problem
+      description: What evidence is currently difficult to collect manually?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Proposed read-only evidence
+      description: List commands, files, or paths and their privacy implications.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: This proposal requires no writes, root access, network access, shell execution, or service changes.
+          required: true

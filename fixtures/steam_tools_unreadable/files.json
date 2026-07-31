@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "directories": [
+    {"path":"/home/tester/.local/share/Steam","entries":["compatibilitytools.d","steamapps"]},
+    {"path":"/home/tester/.local/share/Steam/steamapps","entries":["common"]},
+    {"path":"/home/tester/.local/share/Steam/steamapps/common","entries":["Proton Experimental"]}
+  ],
+  "unreadable_directories": ["/home/tester/.local/share/Steam/compatibilitytools.d"]
+}

@@ -1,0 +1,184 @@
+{
+  "schema_url": "https://raw.githubusercontent.com/walidbi200/GameDoc/main/schema/gamedoc.v2.schema.json",
+  "schema": "gamedoc.v2",
+  "gamedoc_version": "0.2.0",
+  "facts": [
+    {
+      "id": "system.architecture",
+      "category": "system",
+      "value": "x86_64",
+      "confidence": "detected",
+      "source": {
+        "collector": "system",
+        "method": {
+          "type": "command",
+          "target": "uname -m"
+        }
+      }
+    },
+    {
+      "id": "system.kernel_version",
+      "category": "system",
+      "value": "6.9.0-test",
+      "confidence": "detected",
+      "source": {
+        "collector": "system",
+        "method": {
+          "type": "command",
+          "target": "uname -r"
+        }
+      }
+    },
+    {
+      "id": "cpu.architecture",
+      "category": "cpu",
+      "value": "x86_64",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "command",
+          "target": "uname -m"
+        }
+      }
+    },
+    {
+      "id": "cpu.cores_logical",
+      "category": "cpu",
+      "value": 0,
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "path",
+          "target": "/sys/devices/system/cpu/"
+        }
+      }
+    },
+    {
+      "id": "gpu.vulkan_available",
+      "category": "gpu",
+      "value": true,
+      "confidence": "detected",
+      "source": {
+        "collector": "graphics",
+        "method": {
+          "type": "command",
+          "target": "vulkaninfo --summary"
+        }
+      }
+    },
+    {
+      "id": "steam.data_readable",
+      "category": "steam",
+      "value": {
+        "installation": "flatpak",
+        "readable": true
+      },
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {
+          "type": "path",
+          "target": "flatpak Steam data"
+        }
+      }
+    },
+    {
+      "id": "steam.installation",
+      "category": "steam",
+      "value": "flatpak",
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {
+          "type": "path",
+          "target": "flatpak Steam data"
+        }
+      }
+    },
+    {
+      "id": "steam.library",
+      "category": "steam",
+      "value": {
+        "index": 1,
+        "installation": "flatpak"
+      },
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {
+          "type": "file",
+          "target": "flatpak Steam library metadata"
+        }
+      }
+    },
+    {
+      "id": "steam.library_readable",
+      "category": "steam",
+      "value": {
+        "index": 1,
+        "installation": "flatpak",
+        "readable": true
+      },
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {
+          "type": "path",
+          "target": "Steam library"
+        }
+      }
+    },
+    {
+      "id": "steam.proton_scan_complete",
+      "category": "steam",
+      "value": {
+        "complete": true,
+        "installation": "flatpak"
+      },
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {
+          "type": "path",
+          "target": "Steam common directory"
+        }
+      }
+    },
+    {
+      "id": "steam.proton_version",
+      "category": "steam",
+      "value": {
+        "installation": "flatpak",
+        "name": "Proton Experimental"
+      },
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {
+          "type": "path",
+          "target": "Steam common directory"
+        }
+      }
+    }
+  ],
+  "problems": [],
+  "checks": [
+    {
+      "collector": "system",
+      "operation": "read /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+      "message": "failed to read /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor: entity not found"
+    },
+    {
+      "collector": "cpu",
+      "operation": "read /proc/cpuinfo",
+      "message": "failed to read /proc/cpuinfo: entity not found"
+    },
+    {
+      "collector": "distro",
+      "operation": "read /etc/os-release",
+      "message": "failed to read /etc/os-release: entity not found"
+    }
+  ]
+}
