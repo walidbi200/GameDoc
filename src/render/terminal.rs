@@ -436,6 +436,19 @@ fn render_dashboard(report: &Report, icons: &Icons, out: &mut String) {
         row("Driver", &driver, out);
     }
 
+    if let Some(governor) = get(report, fact::CPU_GOVERNOR) {
+        let governor_str = if governor == "powersave" {
+            warn_str(icons, &format!("{governor} — may hurt gaming performance"))
+        } else {
+            governor.clone()
+        };
+        row("Governor", &governor_str, out);
+    }
+
+    if let Some(session) = get(report, fact::SESSION_TYPE) {
+        row("Session", &session, out);
+    }
+
     // ── Gaming ────────────────────────────────────────────────────────────────
     section("Gaming", icons, out);
 
