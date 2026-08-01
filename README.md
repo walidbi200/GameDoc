@@ -6,28 +6,19 @@
 
 **Deterministic, read-only Linux gaming diagnostics.**
 
-GameDoc audits your Linux gaming stack and produces a scored, structured
-report. Use it to diagnose issues, share with support channels, or verify
-your setup before a gaming session.
+GameDoc audits your Linux gaming stack and produces a scored, structured report. Use it to diagnose issues, share with support channels, or verify your setup before a gaming session.
 
 
-## What GameDoc does
+## Why GameDoc?
 
-- Scores your gaming environment out of 100
-- Detects missing or broken dependencies (Vulkan, Proton, Steam, MangoHud, GameMode, Gamescope)
-- Reports CPU, GPU, kernel, driver, and OS details
-- Produces JSON, Markdown, or terminal output
-- Never modifies the system, contacts the network, or sends telemetry
-
-## What GameDoc does not do
-
-- Optimize or benchmark performance
-- Automatically apply fixes
-- Require root
+- **Actionable** – Scores your environment out of 100 and highlights exactly what needs fixing.
+- **Comprehensive** – Detects broken dependencies (Vulkan, Proton, Steam, MangoHud, GameMode, Gamescope) and reports hardware specs.
+- **Shareable** – Produces JSON, Markdown, or clean terminal output.
+- **Safe** – 100% read-only. GameDoc never modifies your system, requires root, or sends telemetry.
 
 ## Installation
 
-GameDoc requires Rust 1.74 or newer.
+GameDoc requires Rust 1.74+.
 
 ```bash
 git clone https://github.com/walidbi200/GameDoc
@@ -102,23 +93,11 @@ for a full real-world example.
 | MangoHud | Executable, config files, environment evidence |
 | GameMode | Executable, daemon status, libraries, config |
 
-## Safety and Privacy
+## Privacy
 
-GameDoc is **read-only**. It never:
+GameDoc is strictly **read-only**. It never requires root, writes files, or contacts the network. All output modes redact home paths, usernames, hostnames, and build-host strings.
 
-- Requires root
-- Writes configuration files
-- Installs packages
-- Starts or stops services
-- Contacts the network
-- Sends telemetry
-
-All output modes redact home paths, usernames, hostnames, and build-host
-strings before rendering. Use `--share` for the strictest mode (omits
-collector diagnostics entirely).
-
-Review a report before posting it. Hardware names, kernel versions, and
-installed tools are intentionally included.
+*(Review any report before posting it publicly, as hardware names, kernel versions, and installed tools are intentionally included.)*
 
 ## Performance
 

@@ -1,6 +1,6 @@
 # GameDoc Report
 
-**GameDoc version:** 0.2.1  
+**GameDoc version:** 0.3.0  
 **Schema:** `gamedoc.v2`
 
 ## Facts

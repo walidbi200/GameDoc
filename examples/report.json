@@ -1,7 +1,7 @@
 {
   "schema_url": "https://raw.githubusercontent.com/walidbi200/GameDoc/main/schema/gamedoc.v2.schema.json",
   "schema": "gamedoc.v2",
-  "gamedoc_version": "0.2.1",
+  "gamedoc_version": "0.3.0",
   "facts": [
     {
       "id": "system.architecture",

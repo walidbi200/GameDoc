@@ -26,7 +26,7 @@
 
 ## Publication
 
-- [ ] Tag `v0.1.0` from the reviewed commit.
+- [ ] Tag `v0.3.0` from the reviewed commit.
 - [ ] Build release artifacts in a clean environment.
 - [ ] Publish checksums with artifacts.
 - [ ] Verify the downloaded artifact before announcing the release.

@@ -1,1 +1,0 @@
-tests/readonly_check.sh: line 15: strace: command not found

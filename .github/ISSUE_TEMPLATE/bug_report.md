@@ -26,5 +26,5 @@ Please run `gamedoc --share --format markdown` and paste the output here:
 
 **System context:**
  - OS: [e.g. Fedora 40, Arch Linux, Bazzite]
- - GameDoc Version: [e.g. 0.1.0]
+ - GameDoc Version: [e.g. 0.3.0]
  - Installation method: [e.g. cargo, source, binary]
