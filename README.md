@@ -10,9 +10,6 @@ GameDoc audits your Linux gaming stack and produces a scored, structured
 report. Use it to diagnose issues, share with support channels, or verify
 your setup before a gaming session.
 
-![GameDoc v0.3.0 demo](assets/demo.png)
-
----
 
 ## What GameDoc does
 
@@ -28,8 +25,6 @@ your setup before a gaming session.
 - Automatically apply fixes
 - Require root
 
----
-
 ## Installation
 
 GameDoc requires Rust 1.74 or newer.
@@ -41,7 +36,14 @@ cargo build --release
 ./target/release/gamedoc
 ```
 
----
+## Demo
+
+<p align="center">
+  <img
+    src="assets/demo.png"
+    alt="GameDoc terminal output"
+    width="650">
+</p>
 
 ## Usage
 
@@ -71,8 +73,6 @@ gamedoc --share --format markdown > report.md
 
 Color is suppressed automatically when `NO_COLOR` is set, or use `--no-color`.
 
----
-
 ## JSON Output
 
 The public schema is `gamedoc.v2`. All changes within v2 are additive.
@@ -90,8 +90,6 @@ The public schema is `gamedoc.v2`. All changes within v2 are additive.
 See [examples/report.json](https://github.com/walidbi200/GameDoc/blob/main/examples/report.json)
 for a full real-world example.
 
----
-
 ## What It Reports
 
 | Category | Facts |
@@ -103,8 +101,6 @@ for a full real-world example.
 | Steam | Native, Flatpak, and Snap installations; libraries; Proton runtimes; compatibility tools |
 | MangoHud | Executable, config files, environment evidence |
 | GameMode | Executable, daemon status, libraries, config |
-
----
 
 ## Safety and Privacy
 
@@ -124,16 +120,12 @@ collector diagnostics entirely).
 Review a report before posting it. Hardware names, kernel versions, and
 installed tools are intentionally included.
 
----
-
 ## Performance
 
 GameDoc runs all collectors in parallel. Median execution time on modern hardware
 is **under 0.7 seconds**. Individual collectors time out at 5 seconds.
 
 See [BENCHMARKS.md](https://github.com/walidbi200/GameDoc/blob/main/BENCHMARKS.md).
-
----
 
 ## Development
 
@@ -157,8 +149,6 @@ cargo test --test golden
 See [CONTRIBUTING.md](https://github.com/walidbi200/GameDoc/blob/main/CONTRIBUTING.md)
 for details on adding collectors and fixtures.
 
----
-
 ## Project Documents
 
 | Document | Purpose |
@@ -170,8 +160,6 @@ for details on adding collectors and fixtures.
 | [FAQ.md](https://github.com/walidbi200/GameDoc/blob/main/FAQ.md) | Common questions |
 | [ROADMAP.md](https://github.com/walidbi200/GameDoc/blob/main/ROADMAP.md) | Planned improvements |
 | [RELEASE.md](https://github.com/walidbi200/GameDoc/blob/main/RELEASE.md) | Release checklist |
-
----
 
 ## License
 
