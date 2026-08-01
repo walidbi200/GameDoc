@@ -1,11 +1,9 @@
 # Changelog
 
-<<<<<<< HEAD
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-=======
 All notable changes are documented here. This project follows Semantic
 Versioning after the initial public release.
 
@@ -105,12 +103,11 @@ Versioning after the initial public release.
 - `ProcessCommandRunner` timeout enforcement replaced with `wait_timeout`
   (no busy-wait).
 
->>>>>>> 2109919 (v0.2.0)
 
 ## [0.1.0] - 2026-07-30
 
 ### Added
-<<<<<<< HEAD
+
 - **Core Architecture**: Initial release of GameDoc with an immutable `Facts` pipeline.
 - **System Collector**: Safely detects OS details, hostname, memory, Wayland/X11 session type, and architecture.
 - **GPU Collector**: Accurately detects GPUs via `lspci`, driver info via `glxinfo`, `vulkaninfo`, and `nvidia-smi`.
@@ -123,15 +120,4 @@ Versioning after the initial public release.
 
 ### Changed
 - Built with a strict `clippy.toml` to ban mutations and guarantee deterministic outcomes.
-=======
 
-- Read-only system and graphics facts.
-- Native, Flatpak, and Snap Steam discovery.
-- Repeated Steam libraries, Proton runtimes, and compatibility tools.
-- MangoHud and GameMode observations.
-- Pure rule evaluation and deterministic problem synthesis.
-- Terminal, Markdown, and `gamedoc.v1` JSON reports.
-- Privacy-safe finalization and stricter `--share` output.
-- Fixture-driven unit tests and full-engine golden scenarios.
-- GitHub Actions checks for stable Rust and the Rust 1.74 MSRV.
->>>>>>> 2109919 (v0.2.0)

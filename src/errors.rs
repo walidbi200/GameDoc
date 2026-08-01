@@ -40,13 +40,10 @@ pub enum CollectError {
         source: std::io::Error,
     },
 
-<<<<<<< HEAD
-=======
     /// An internal output-capture worker terminated unexpectedly.
     #[error("command output capture thread terminated unexpectedly")]
     CommandCaptureThread,
 
->>>>>>> 2109919 (v0.2.0)
     /// A file or directory could not be read.
     #[error("failed to read {path}: {source}")]
     FilesystemRead {

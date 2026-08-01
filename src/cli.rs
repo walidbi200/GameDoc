@@ -6,38 +6,40 @@ use clap::{Parser, ValueEnum};
     name = "gamedoc",
     version,
     about,
-<<<<<<< HEAD
-    long_about = "GameDoc inspects local Linux gaming components and prints a deterministic report.\n\nGameDoc never modifies the system, contacts the network, or sends telemetry.",
-    after_help = "EXAMPLES:\n  gamedoc\n    Run and print a colorful terminal report\n\n  gamedoc --share\n    Run and print a sanitized terminal report, hiding usernames\n\n  gamedoc --format json\n    Run and output structured JSON data for external tools\n\n  gamedoc --format markdown\n    Run and output a Markdown document suitable for GitHub issues"
-)]
-pub struct Cli {
-    /// Select a structured report format.
-    #[arg(long, value_enum, conflicts_with = "share")]
-=======
     long_about = "GameDoc inspects local Linux gaming components and prints a deterministic report.\n\nGameDoc never modifies the system, contacts the network, or sends telemetry."
 )]
+#[allow(clippy::struct_excessive_bools)]
 pub struct Cli {
     /// Select a structured report format.
-    #[arg(long, value_enum)]
->>>>>>> 2109919 (v0.2.0)
+    #[arg(long, value_enum, conflicts_with_all = ["summary", "verbose"])]
     pub format: Option<OutputFormat>,
+
+    /// Show only high-level health status and problems.
+    #[arg(long, conflicts_with_all = ["verbose", "format"])]
+    pub summary: bool,
+
+    /// Show detailed raw diagnostic facts below the dashboard.
+    #[arg(long, conflicts_with_all = ["summary", "format"])]
+    pub verbose: bool,
+
+    /// Use ASCII characters instead of Unicode
+    #[arg(long, env = "GAMEDOC_ASCII")]
+    pub ascii: bool,
+
+    /// Run in deterministic demo mode (useful for screenshots)
+    #[arg(long, env = "GAMEDOC_DEMO", hide = true)]
+    pub demo: bool,
 
     /// Print a privacy-sanitized report suitable for sharing.
     #[arg(long)]
     pub share: bool,
 
-<<<<<<< HEAD
-    /// Print execution traces and durations for all collected evidence.
-    #[arg(short, long)]
-    pub debug: bool,
-=======
     /// Disable colored output even when connected to a terminal.
     #[arg(long)]
     pub no_color: bool,
 
     #[command(subcommand)]
     pub command: Option<Commands>,
->>>>>>> 2109919 (v0.2.0)
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
@@ -46,8 +48,6 @@ pub enum OutputFormat {
     Json,
 }
 
-<<<<<<< HEAD
-=======
 #[derive(Debug, Parser)]
 pub enum Commands {
     /// Generate shell completion script for the specified shell.
@@ -59,7 +59,6 @@ pub enum Commands {
     Man,
 }
 
->>>>>>> 2109919 (v0.2.0)
 #[cfg(test)]
 mod tests {
     use clap::{CommandFactory, Parser};
@@ -77,10 +76,9 @@ mod tests {
 
         assert_eq!(cli.format, None);
         assert!(!cli.share);
-<<<<<<< HEAD
-        assert!(!cli.debug);
-=======
->>>>>>> 2109919 (v0.2.0)
+        assert!(!cli.summary);
+        assert!(!cli.verbose);
+        assert!(!cli.ascii);
     }
 
     #[test]
@@ -95,12 +93,6 @@ mod tests {
     }
 
     #[test]
-<<<<<<< HEAD
-    fn rejects_format_with_share_mode() {
-        let result = Cli::try_parse_from(["gamedoc", "--format", "json", "--share"]);
-
-        assert!(result.is_err());
-=======
     fn allows_format_with_share_mode() {
         let result = Cli::try_parse_from(["gamedoc", "--format", "json", "--share"]);
 
@@ -108,6 +100,5 @@ mod tests {
         let cli = result.unwrap();
         assert_eq!(cli.format, Some(OutputFormat::Json));
         assert!(cli.share);
->>>>>>> 2109919 (v0.2.0)
     }
 }
