@@ -11,6 +11,47 @@ Versioning after the initial public release.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-01
+
+### Added
+
+- **Gaming Score hero**: Score is now the first thing you see — 30-block progress
+  bar followed immediately by the verdict on the next line.
+- **5-tier verdict system**: `Excellent Linux Gaming Environment` (95–100),
+  `Ready for Linux Gaming` (80–94), `Gaming Ready — Minor Issues` (60–79),
+  `Needs Attention` (40–59), `Gaming Environment Has Critical Issues` (0–39).
+  Verdict is entirely score-driven; no contradictory status messages.
+- **Kernel row** in the System section of the terminal dashboard.
+- **Score test**: `score_100_maps_to_excellent_verdict` unit test.
+
+### Changed
+
+- Section names renamed: `System Profile` → `System`, `Gaming Stack` → `Gaming`
+  for brevity and consistency with established tool conventions.
+- Label column width reduced from 18 to 12 characters — better rhythm on
+  standard 80-column terminals.
+- Divider length reduced from 60 to 46 characters — cleaner on narrow terminals.
+- Score bar widened to 30 blocks and color thresholds changed: green ≥ 80,
+  yellow 60–79, red < 60.
+- Footer spacing: `183 ms  ·  N facts  ·  N issues  ·  N skipped`.
+- Recommendations now display a `Reason` label before the explanation and a
+  `Command` label before the fix.
+- Status labels for missing tools changed from `Missing` → `Not found`.
+- Demo report now includes Kernel, uses clean driver string `4.6.0 NVIDIA 575.xx`,
+  and uses boolean facts for VULKAN_AVAILABLE, GAMESCOPE_INSTALLATION, and
+  GAMEMODE_DAEMON_RUNNING.
+- `gaming_status()` return values align with the 5-tier verdict system.
+- Golden snapshots regenerated for all 6 scenarios.
+- Demo screenshot (`assets/demo.png`) regenerated: Catppuccin Mocha palette,
+  JetBrains Mono font, rounded corners, drop shadow.
+
+
+### Changed
+
+- **Metadata:** Improved `Cargo.toml` with `repository`, `homepage`, `documentation`, updated `keywords` and `categories` for crates.io discoverability.
+- **Documentation:** Fixed docs.rs compatibility warnings and improved library-level documentation presentation.
+
+## [0.2.0] - 2026-07-31
 ### Added
 
 - Structured `Recommendation` type with platform-specific instructions, difficulty, estimated time, and upstream documentation links.
