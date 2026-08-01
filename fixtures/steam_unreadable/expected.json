@@ -1,7 +1,7 @@
 {
   "schema_url": "https://raw.githubusercontent.com/walidbi200/GameDoc/main/schema/gamedoc.v2.schema.json",
   "schema": "gamedoc.v2",
-  "gamedoc_version": "0.2.0",
+  "gamedoc_version": "0.3.0",
   "facts": [
     {
       "id": "system.architecture",
@@ -203,7 +203,7 @@
         "The local Vulkan probe exited unsuccessfully."
       ],
       "recommendation": {
-        "text": "Vulkan is not available.",
+        "text": "GameDoc could not verify Vulkan support because vulkaninfo was not installed or did not report a working Vulkan device.",
         "platform_specific": {
           "arch": "pacman -S vulkan-tools",
           "debian": "apt install vulkan-tools",
@@ -227,7 +227,7 @@
         "1 Steam library location(s) could not be read."
       ],
       "recommendation": {
-        "text": "A Steam library could not be read. Check filesystem permissions on the library mount.",
+        "text": "GameDoc could not inspect this library, so installed games and compatibility tools may be missing from the report. Check the mount and grant your user read access.",
         "difficulty": 2,
         "est_minutes": 5,
         "requires_root": true,

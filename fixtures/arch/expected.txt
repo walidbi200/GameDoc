@@ -1,21 +1,31 @@
-GameDoc 0.2.0
-Schema: gamedoc.v2
+[1mGameDoc v0.3.0[0m
+[90m----------------------------------------------[0m
 
-[1mFacts:[0m
-  system.architecture: x86_64 (detected)
-  system.cpu_governor: performance (detected)
-  system.desktop: GNOME (detected)
-  system.kernel_version: 6.9.0-test (detected)
-  system.session_type: wayland (detected)
-  cpu.architecture: x86_64 (detected)
-  cpu.cores_logical: 0 (detected)
-  gpu.device: 00:02.0 "VGA compatible controller" "Example GPU" "Model 1" (detected)
-  gpu.opengl_renderer: Example Renderer (detected)
-  gpu.opengl_version: 4.6 Mesa 24.1 (detected)
-  gpu.vulkan_available: true (detected)
+[1mGaming Score[0m
 
-No problems detected from available evidence.
+[32m█████████████████████████████░[0m  [32m98 / 100[0m
 
-[1mIncomplete observations:[0m
-  cpu (read /proc/cpuinfo): failed to read /proc/cpuinfo: entity not found
-  distro (read /etc/os-release): failed to read /etc/os-release: entity not found
+[32m[OK][0m [32mExcellent Linux Gaming Environment[0m
+
+[1mSystem[0m
+[90m----------------------------------------------[0m
+[36mKernel      [0m  6.9.0-test
+[36mGPU         [0m  Example GPU Model 1
+[36mDriver      [0m  4.6 Mesa 24.1
+
+[1mGaming[0m
+[90m----------------------------------------------[0m
+[36mSteam       [0m  [31m[X][0m Not found
+[36mGameMode    [0m  [33m[!][0m Not found
+[36mGamescope   [0m  [33m[!][0m Not found
+[36mMangoHud    [0m  [33m[!][0m Not found
+[36mOpenGL      [0m  [32m[OK][0m
+[36mVulkan      [0m  [32m[OK][0m
+
+[1mChecks Skipped[0m
+[90m----------------------------------------------[0m
+  [2m[!][0m  cpu — failed to read /proc/cpuinfo: entity not found
+  [2m[!][0m  distro — failed to read /etc/os-release: entity not found
+
+[90m----------------------------------------------[0m
+[90m147 ms  ·  11 facts  ·  0 issues  ·  2 skipped[0m

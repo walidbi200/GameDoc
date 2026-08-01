@@ -1,6 +1,6 @@
 # GameDoc Report
 
-**GameDoc version:** 0.2.0  
+**GameDoc version:** 0.3.0  
 **Schema:** `gamedoc.v2`
 
 ## Facts
@@ -29,7 +29,7 @@
 - **Category:** GPU
 - The local Vulkan probe exited unsuccessfully.
 
-**Recommendation:** Vulkan is not available.
+**Recommendation:** GameDoc could not verify Vulkan support because vulkaninfo was not installed or did not report a working Vulkan device.
 
 ### medium: A Steam library could not be read
 
@@ -37,7 +37,7 @@
 - **Category:** Steam
 - 1 Steam library location(s) could not be read.
 
-**Recommendation:** A Steam library could not be read. Check filesystem permissions on the library mount.
+**Recommendation:** GameDoc could not inspect this library, so installed games and compatibility tools may be missing from the report. Check the mount and grant your user read access.
 
 
 ## Incomplete Observations

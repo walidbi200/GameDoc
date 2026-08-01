@@ -1,6 +1,6 @@
 # GameDoc Report
 
-**GameDoc version:** 0.2.0  
+**GameDoc version:** 0.3.0  
 **Schema:** `gamedoc.v2`
 
 ## Facts
@@ -14,7 +14,7 @@
 | System | `system.session_type` | wayland | detected |
 | CPU | `cpu.architecture` | x86_64 | detected |
 | CPU | `cpu.cores_logical` | 0 | detected |
-| GPU | `gpu.device` | 00:02.0 "VGA compatible controller" "Example GPU" "Model 1" | detected |
+| GPU | `gpu.device` | Example GPU Model 1 | detected |
 | GPU | `gpu.opengl_renderer` | Example Renderer | detected |
 | GPU | `gpu.opengl_version` | 4.6 Mesa 24.1 | detected |
 | GPU | `gpu.vulkan_available` | true | detected |
