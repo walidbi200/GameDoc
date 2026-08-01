@@ -1,29 +1,16 @@
 [package]
 name = "gamedoc"
-<<<<<<< HEAD
-version = "0.1.0"
-=======
-version = "0.2.0"
->>>>>>> 2109919 (v0.2.0)
+version = "0.3.0"
 edition = "2021"
 rust-version = "1.74"
 description = "Deterministic, read-only Linux gaming diagnostics"
-license = "MIT"
-readme = "README.md"
-keywords = ["gaming", "linux", "diagnostics"]
-categories = ["command-line-utilities"]
-<<<<<<< HEAD
 repository = "https://github.com/walidbi200/GameDoc"
 homepage = "https://github.com/walidbi200/GameDoc"
-documentation = "https://github.com/walidbi200/GameDoc#readme"
-
-[dependencies]
-anyhow = "1.0"
-clap = { version = "=4.4.18", features = ["derive"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-thiserror = "1.0"
-=======
+documentation = "https://docs.rs/gamedoc"
+license = "MIT"
+readme = "README.md"
+keywords = ["gaming", "linux", "diagnostics", "system", "hardware"]
+categories = ["command-line-utilities", "os", "hardware-support"]
 
 [dependencies]
 anyhow = "1.0"
@@ -34,7 +21,6 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "1.0"
 wait-timeout = "0.2"
->>>>>>> 2109919 (v0.2.0)
 
 [lints.rust]
 unsafe_code = "forbid"
@@ -42,9 +28,6 @@ unsafe_code = "forbid"
 [lints.clippy]
 all = "warn"
 pedantic = "warn"
-<<<<<<< HEAD
-=======
 
 [dev-dependencies]
 jsonschema = "0.17"
->>>>>>> 2109919 (v0.2.0)

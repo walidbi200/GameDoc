@@ -1,7 +1,60 @@
 {
-  "schema": "gamedoc.v1",
-  "gamedoc_version": "0.1.0",
+  "schema_url": "https://raw.githubusercontent.com/walidbi200/GameDoc/main/schema/gamedoc.v2.schema.json",
+  "schema": "gamedoc.v2",
+  "gamedoc_version": "0.2.1",
   "facts": [
+    {
+      "id": "system.architecture",
+      "category": "system",
+      "value": "x86_64",
+      "confidence": "detected",
+      "source": {
+        "collector": "system",
+        "method": {
+          "type": "command",
+          "target": "uname -m"
+        }
+      }
+    },
+    {
+      "id": "system.cpu_governor",
+      "category": "system",
+      "value": "powersave",
+      "confidence": "detected",
+      "source": {
+        "collector": "system",
+        "method": {
+          "type": "file",
+          "target": "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+        }
+      }
+    },
+    {
+      "id": "system.desktop",
+      "category": "system",
+      "value": "GNOME",
+      "confidence": "detected",
+      "source": {
+        "collector": "system",
+        "method": {
+          "type": "environment",
+          "target": "desktop environment"
+        }
+      }
+    },
+    {
+      "id": "system.kernel_version",
+      "category": "system",
+      "value": "7.1.4-204.fc44.x86_64",
+      "confidence": "detected",
+      "source": {
+        "collector": "system",
+        "method": {
+          "type": "command",
+          "target": "uname -r"
+        }
+      }
+    },
     {
       "id": "system.session_type",
       "category": "system",
@@ -9,20 +62,685 @@
       "confidence": "detected",
       "source": {
         "collector": "system",
-        "method": {"type": "environment", "target": "desktop session type"}
+        "method": {
+          "type": "environment",
+          "target": "desktop session type"
+        }
       }
     },
     {
-      "id": "steam.proton_version",
+      "id": "cpu.architecture",
+      "category": "cpu",
+      "value": "x86_64",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "command",
+          "target": "uname -m"
+        }
+      }
+    },
+    {
+      "id": "cpu.cores_logical",
+      "category": "cpu",
+      "value": 8,
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "path",
+          "target": "/sys/devices/system/cpu/"
+        }
+      }
+    },
+    {
+      "id": "cpu.cores_physical",
+      "category": "cpu",
+      "value": 1,
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "path",
+          "target": "/sys/devices/system/cpu/"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3399.585",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3399.748",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3399.965",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3400.202",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3400.605",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3401.991",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3403.046",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.frequency_mhz",
+      "category": "cpu",
+      "value": "3404.104",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.model",
+      "category": "cpu",
+      "value": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.vendor",
+      "category": "cpu",
+      "value": "GenuineIntel",
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "cpu.virtualization_flags",
+      "category": "cpu",
+      "value": [
+        "vmx"
+      ],
+      "confidence": "detected",
+      "source": {
+        "collector": "cpu",
+        "method": {
+          "type": "file",
+          "target": "/proc/cpuinfo"
+        }
+      }
+    },
+    {
+      "id": "distro.family",
+      "category": "distro",
+      "value": "fedora",
+      "confidence": "detected",
+      "source": {
+        "collector": "distro",
+        "method": {
+          "type": "file",
+          "target": "/etc/os-release"
+        }
+      }
+    },
+    {
+      "id": "distro.id",
+      "category": "distro",
+      "value": "fedora",
+      "confidence": "detected",
+      "source": {
+        "collector": "distro",
+        "method": {
+          "type": "file",
+          "target": "/etc/os-release"
+        }
+      }
+    },
+    {
+      "id": "distro.name",
+      "category": "distro",
+      "value": "Fedora Linux",
+      "confidence": "detected",
+      "source": {
+        "collector": "distro",
+        "method": {
+          "type": "file",
+          "target": "/etc/os-release"
+        }
+      }
+    },
+    {
+      "id": "distro.pretty_name",
+      "category": "distro",
+      "value": "Fedora Linux 44 (Workstation Edition)",
+      "confidence": "detected",
+      "source": {
+        "collector": "distro",
+        "method": {
+          "type": "file",
+          "target": "/etc/os-release"
+        }
+      }
+    },
+    {
+      "id": "distro.version_id",
+      "category": "distro",
+      "value": "44",
+      "confidence": "detected",
+      "source": {
+        "collector": "distro",
+        "method": {
+          "type": "file",
+          "target": "/etc/os-release"
+        }
+      }
+    },
+    {
+      "id": "gpu.device",
+      "category": "gpu",
+      "value": "00:02.0 \"VGA compatible controller\" \"Intel Corporation\" \"CometLake-H GT2 [UHD Graphics]\" -r05 -p00 \"Dell\" \"Device 09e1\"",
+      "confidence": "detected",
+      "source": {
+        "collector": "graphics",
+        "method": {
+          "type": "command",
+          "target": "lspci -mm"
+        }
+      }
+    },
+    {
+      "id": "gpu.device",
+      "category": "gpu",
+      "value": "01:00.0 \"VGA compatible controller\" \"NVIDIA Corporation\" \"TU117M [GeForce GTX 1650 Mobile / Max-Q]\" -ra1 -p00 \"Dell\" \"Device 09e1\"",
+      "confidence": "detected",
+      "source": {
+        "collector": "graphics",
+        "method": {
+          "type": "command",
+          "target": "lspci -mm"
+        }
+      }
+    },
+    {
+      "id": "gpu.opengl_renderer",
+      "category": "gpu",
+      "value": "Mesa Intel(R) UHD Graphics (CML GT2)",
+      "confidence": "detected",
+      "source": {
+        "collector": "graphics",
+        "method": {
+          "type": "command",
+          "target": "glxinfo -B"
+        }
+      }
+    },
+    {
+      "id": "gpu.opengl_version",
+      "category": "gpu",
+      "value": "4.6 (Compatibility Profile) Mesa 26.1.5",
+      "confidence": "detected",
+      "source": {
+        "collector": "graphics",
+        "method": {
+          "type": "command",
+          "target": "glxinfo -B"
+        }
+      }
+    },
+    {
+      "id": "steam.executable",
       "category": "steam",
-      "value": {"installation": "native", "name": "Proton Experimental"},
+      "value": true,
       "confidence": "detected",
       "source": {
         "collector": "steam",
-        "method": {"type": "path", "target": "Steam common directory"}
+        "method": {
+          "type": "path",
+          "target": "PATH:steam"
+        }
+      }
+    },
+    {
+      "id": "steam.installation",
+      "category": "steam",
+      "value": "native",
+      "confidence": "detected",
+      "source": {
+        "collector": "steam",
+        "method": {
+          "type": "path",
+          "target": "native Steam executable"
+        }
+      }
+    },
+    {
+      "id": "gamemode.daemon_available",
+      "category": "game_mode",
+      "value": true,
+      "confidence": "detected",
+      "source": {
+        "collector": "gamemode",
+        "method": {
+          "type": "command",
+          "target": "gamemoded -s"
+        }
+      }
+    },
+    {
+      "id": "gamemode.daemon_running",
+      "category": "game_mode",
+      "value": true,
+      "confidence": "detected",
+      "source": {
+        "collector": "gamemode",
+        "method": {
+          "type": "command",
+          "target": "pgrep gamemoded"
+        }
+      }
+    },
+    {
+      "id": "gamemode.executable",
+      "category": "game_mode",
+      "value": true,
+      "confidence": "detected",
+      "source": {
+        "collector": "gamemode",
+        "method": {
+          "type": "path",
+          "target": "PATH:gamemoderun"
+        }
+      }
+    },
+    {
+      "id": "gamemode.library",
+      "category": "game_mode",
+      "value": "64-bit",
+      "confidence": "detected",
+      "source": {
+        "collector": "gamemode",
+        "method": {
+          "type": "path",
+          "target": "64-bit GameMode library"
+        }
       }
     }
   ],
   "problems": [],
-  "diagnostics": []
+  "checks": [
+    {
+      "collector": "graphics",
+      "operation": "vulkaninfo --summary",
+      "message": "command not found: vulkaninfo"
+    }
+  ]
 }

@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-use anyhow::Result;
-use clap::Parser;
-use gamedoc::checks;
-use gamedoc::cli::{Cli, OutputFormat};
-use gamedoc::collect::context::CollectorContext;
-use gamedoc::model::Report;
-use gamedoc::render;
-
-fn main() {
-    if let Err(err) = run() {
-        eprintln!("\n ✗ Error: {err}");
-        let mut source = err.source();
-        while let Some(s) = source {
-            eprintln!("   ↳ {s}");
-            source = s.source();
-        }
-        eprintln!();
-=======
 use std::io::Write as _;
 
 use anyhow::Result;
@@ -30,7 +11,6 @@ use gamedoc::{engine, render};
 fn main() {
     if let Err(error) = run() {
         eprintln!("error: {error:#}");
->>>>>>> 2109919 (v0.2.0)
         std::process::exit(1);
     }
 }
@@ -38,27 +18,6 @@ fn main() {
 fn run() -> Result<()> {
     let cli = Cli::parse();
 
-<<<<<<< HEAD
-    let ctx = CollectorContext::real();
-    let diagnostics = checks::collect(&ctx);
-    let report = Report::new(
-        env!("CARGO_PKG_VERSION"),
-        diagnostics.facts,
-        diagnostics.checks,
-        diagnostics.problems,
-    );
-
-    if cli.share {
-        render::terminal::print_report(&report, /*sanitize=*/ true, cli.debug);
-    } else {
-        match cli.format {
-            None => render::terminal::print_report(&report, /*sanitize=*/ false, cli.debug),
-            Some(OutputFormat::Markdown) => print!("{}", render::markdown::render_report(&report)),
-            Some(OutputFormat::Json) => print!("{}", render::json::render_report(&report)?),
-        }
-    }
-
-=======
     if let Some(command) = cli.command {
         return run_command(&command);
     }
@@ -110,7 +69,6 @@ fn run_command(command: &Commands) -> Result<()> {
             man.render(&mut std::io::stdout())?;
         }
     }
->>>>>>> 2109919 (v0.2.0)
     Ok(())
 }
 

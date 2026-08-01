@@ -25,10 +25,11 @@ fn collect_gpu_devices(system: &dyn SystemProbe, result: &mut CollectionResult) 
     match system.command("lspci", &["-mm"]) {
         Ok(output) if output.success() => {
             for line in output.stdout.lines().filter(|line| is_display_device(line)) {
+                let parsed = clean_gpu_name(&parse_lspci_mm_line(line));
                 result.facts.push(Fact::observed(
                     fact::GPU_DEVICE,
                     Category::Gpu,
-                    line.trim(),
+                    parsed,
                     command_source("lspci -mm"),
                 ));
             }
@@ -113,6 +114,27 @@ fn is_display_device(line: &str) -> bool {
         || line.contains("Display controller")
 }
 
+fn parse_lspci_mm_line(line: &str) -> String {
+    let parts: Vec<&str> = line.split("\" \"").collect();
+    if parts.len() >= 3 {
+        let vendor = parts[1].trim_matches('"');
+        let device = parts[2].trim_matches('"');
+        format!("{vendor} {device}")
+    } else {
+        line.trim().to_owned()
+    }
+}
+
+fn clean_gpu_name(raw: &str) -> String {
+    raw.replace('\"', "")
+        .replace(" Corporation", "")
+        .replace(" Micro Devices, Inc.", "")
+        .replace(" [AMD/ATI]", "")
+        .replace(" (R)", "")
+        .trim()
+        .to_owned()
+}
+
 #[cfg(test)]
 mod tests {
     use crate::collect::command::CommandOutput;
@@ -149,6 +171,13 @@ mod tests {
                 .count(),
             2
         );
+        let gpus: Vec<_> = result
+            .facts
+            .iter()
+            .filter(|f| f.id == fact::GPU_DEVICE)
+            .collect();
+        assert_eq!(gpus[0].value.as_str().unwrap(), "Intel UHD");
+        assert_eq!(gpus[1].value.as_str().unwrap(), "AMD RX 6800");
         assert!(result
             .facts
             .iter()

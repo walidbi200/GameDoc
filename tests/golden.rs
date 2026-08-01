@@ -84,7 +84,15 @@ fn assert_scenario(name: &str) {
     );
     assert_golden(
         &root.join("expected.txt"),
-        &render::terminal::render_report(&report),
+        &render::terminal::render_report(
+            &report,
+            &render::terminal::TerminalConfig {
+                summary: false,
+                verbose: false,
+                ascii: true,
+                duration_ms: 147,
+            },
+        ),
     );
 }
 

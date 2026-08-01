@@ -36,7 +36,10 @@ macro_rules! color_fn {
 color_fn!(bold, "1");
 color_fn!(green, "32");
 color_fn!(yellow, "33");
+color_fn!(blue, "34");
+color_fn!(cyan, "36");
 color_fn!(red, "31");
+color_fn!(gray, "90");
 color_fn!(dim, "2");
 
 #[must_use]

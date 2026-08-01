@@ -32,7 +32,7 @@ impl Collector for CpuCollector {
                         "model name" => {
                             result.facts.push(observed(
                                 fact::CPU_MODEL,
-                                value,
+                                clean_cpu_name(value),
                                 ObservationMethod::File("/proc/cpuinfo".to_owned()),
                             ));
                         }
@@ -153,6 +153,17 @@ fn observed(
 
 fn is_virtualization_flag(flag: &str) -> bool {
     matches!(flag, "vmx" | "svm" | "hypervisor" | "svm_lock")
+}
+
+fn clean_cpu_name(raw: &str) -> String {
+    let s = raw.replace("(R)", "").replace("(TM)", "");
+    if let Some(idx) = s.find(" CPU @ ") {
+        s[..idx].trim().to_owned()
+    } else if let Some(idx) = s.find(" @ ") {
+        s[..idx].trim().to_owned()
+    } else {
+        s.trim().to_owned()
+    }
 }
 
 #[cfg(test)]
