@@ -39,6 +39,7 @@ pub fn evaluate_all(facts: &Facts) -> Vec<RuleOutcome> {
         &SteamProtonRule,
         &SteamLibraryReadableRule,
         &GameModeDaemonRule,
+        &CpuGovernorRule,
     ];
     rules.sort_by_key(|item| item.id());
     rules
@@ -75,7 +76,7 @@ impl Rule for VulkanAvailableRule {
     }
 
     fn requires(&self) -> &'static [FactId] {
-        &[fact::VULKAN_AVAILABLE]
+        &[]
     }
 
     fn optional(&self) -> &'static [FactId] {
@@ -83,36 +84,43 @@ impl Rule for VulkanAvailableRule {
     }
 
     fn evaluate(&self, facts: &Facts) -> RuleOutcome {
-        let Some(available) = facts
-            .first(fact::VULKAN_AVAILABLE)
-            .and_then(|item| item.value.as_bool())
-        else {
-            return RuleOutcome {
-                rule_id: self.id(),
-                status: RuleStatus::Skipped,
-                explanation: "gpu.vulkan_available was not a boolean".to_owned(),
-                candidates: Vec::new(),
-            };
-        };
+        let item = facts.first(fact::VULKAN_AVAILABLE);
 
-        if available {
-            RuleOutcome {
-                rule_id: self.id(),
-                status: RuleStatus::Passed,
-                explanation: "vulkaninfo completed successfully".to_owned(),
-                candidates: Vec::new(),
-            }
-        } else {
-            RuleOutcome {
+        match item {
+            Some(fact) => match fact.value.as_bool() {
+                Some(true) => RuleOutcome {
+                    rule_id: self.id(),
+                    status: RuleStatus::Passed,
+                    explanation: "vulkaninfo completed successfully".to_owned(),
+                    candidates: Vec::new(),
+                },
+                Some(false) => RuleOutcome {
+                    rule_id: self.id(),
+                    status: RuleStatus::Problem,
+                    explanation: "vulkaninfo did not complete successfully".to_owned(),
+                    candidates: vec![ProblemCandidate {
+                        id: problem::VULKAN_UNAVAILABLE,
+                        category: Category::Gpu,
+                        evidence: vec!["The local Vulkan probe exited unsuccessfully.".to_owned()],
+                    }],
+                },
+                None => RuleOutcome {
+                    rule_id: self.id(),
+                    status: RuleStatus::Skipped,
+                    explanation: "gpu.vulkan_available was not a boolean".to_owned(),
+                    candidates: Vec::new(),
+                },
+            },
+            None => RuleOutcome {
                 rule_id: self.id(),
                 status: RuleStatus::Problem,
-                explanation: "vulkaninfo was present but did not complete successfully".to_owned(),
+                explanation: "vulkaninfo was missing".to_owned(),
                 candidates: vec![ProblemCandidate {
                     id: problem::VULKAN_UNAVAILABLE,
                     category: Category::Gpu,
-                    evidence: vec!["The local Vulkan probe exited unsuccessfully.".to_owned()],
+                    evidence: vec!["The local Vulkan probe was missing.".to_owned()],
                 }],
-            }
+            },
         }
     }
 }
@@ -280,6 +288,57 @@ fn problem(rule_id: RuleId, explanation: &str, candidate: ProblemCandidate) -> R
     }
 }
 
+/// Detects a `powersave` CPU frequency governor, which significantly reduces
+/// gaming performance by keeping the CPU at minimum clock speed even under load.
+///
+/// Governors like `schedutil` and `performance` respond to load and are safe
+/// for gaming. `powersave` is the default on many laptop distributions.
+struct CpuGovernorRule;
+
+impl Rule for CpuGovernorRule {
+    fn id(&self) -> RuleId {
+        rule::CPU_GOVERNOR
+    }
+
+    fn requires(&self) -> &'static [FactId] {
+        &[fact::CPU_GOVERNOR]
+    }
+
+    fn optional(&self) -> &'static [FactId] {
+        &[]
+    }
+
+    fn evaluate(&self, facts: &Facts) -> RuleOutcome {
+        let governor = facts
+            .first(fact::CPU_GOVERNOR)
+            .and_then(|f| f.value.as_str().map(str::to_owned));
+
+        match governor.as_deref() {
+            Some("powersave") => problem(
+                self.id(),
+                "CPU governor is powersave — CPU stays at minimum frequency",
+                ProblemCandidate {
+                    id: problem::CPU_GOVERNOR_POWERSAVE,
+                    category: Category::System,
+                    evidence: vec![
+                        "The CPU frequency governor is set to 'powersave'.".to_owned(),
+                        "This keeps the CPU at its minimum clock frequency even under full \
+                         load, which can reduce gaming performance by 20–50%."
+                            .to_owned(),
+                    ],
+                },
+            ),
+            Some(_) => passed(self.id(), "CPU governor allows frequency scaling"),
+            None => RuleOutcome {
+                rule_id: self.id(),
+                status: RuleStatus::Skipped,
+                explanation: "CPU governor fact had an unexpected value type".to_owned(),
+                candidates: Vec::new(),
+            },
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::facts::{Category, Fact, FactBuilder, FactSource, ObservationMethod};
@@ -288,15 +347,15 @@ mod tests {
     use super::{evaluate_all, RuleStatus};
 
     #[test]
-    fn missing_required_fact_skips_rule() {
+    fn missing_vulkan_fact_emits_problem() {
         let outcomes = evaluate_all(&FactBuilder::new().build());
         let outcome = outcomes
             .iter()
             .find(|item| item.rule_id == rule::VULKAN_AVAILABLE)
             .unwrap();
 
-        assert_eq!(outcome.status, RuleStatus::Skipped);
-        assert!(outcome.candidates.is_empty());
+        assert_eq!(outcome.status, RuleStatus::Problem);
+        assert_eq!(outcome.candidates.len(), 1);
     }
 
     #[test]
@@ -343,5 +402,69 @@ mod tests {
 
         assert_eq!(outcome.status, RuleStatus::Skipped);
         assert!(outcome.candidates.is_empty());
+    }
+
+    #[test]
+    fn powersave_governor_emits_high_severity_problem() {
+        let mut builder = FactBuilder::new();
+        builder.append([Fact::observed(
+            fact::CPU_GOVERNOR,
+            Category::System,
+            "powersave",
+            FactSource {
+                collector: collector::SYSTEM,
+                method: ObservationMethod::File(
+                    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor".to_owned(),
+                ),
+            },
+        )]);
+
+        let outcomes = evaluate_all(&builder.build());
+        let outcome = outcomes
+            .iter()
+            .find(|item| item.rule_id == rule::CPU_GOVERNOR)
+            .unwrap();
+
+        assert_eq!(outcome.status, RuleStatus::Problem);
+        assert_eq!(outcome.candidates.len(), 1);
+        assert_eq!(
+            outcome.candidates[0].id,
+            crate::ids::problem::CPU_GOVERNOR_POWERSAVE
+        );
+    }
+
+    #[test]
+    fn schedutil_governor_passes_rule() {
+        let mut builder = FactBuilder::new();
+        builder.append([Fact::observed(
+            fact::CPU_GOVERNOR,
+            Category::System,
+            "schedutil",
+            FactSource {
+                collector: collector::SYSTEM,
+                method: ObservationMethod::File(
+                    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor".to_owned(),
+                ),
+            },
+        )]);
+
+        let outcomes = evaluate_all(&builder.build());
+        let outcome = outcomes
+            .iter()
+            .find(|item| item.rule_id == rule::CPU_GOVERNOR)
+            .unwrap();
+
+        assert_eq!(outcome.status, RuleStatus::Passed);
+    }
+
+    #[test]
+    fn missing_governor_fact_skips_cpu_governor_rule() {
+        let outcomes = evaluate_all(&FactBuilder::new().build());
+        let outcome = outcomes
+            .iter()
+            .find(|item| item.rule_id == rule::CPU_GOVERNOR)
+            .unwrap();
+
+        assert_eq!(outcome.status, RuleStatus::Skipped);
     }
 }

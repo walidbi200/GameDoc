@@ -35,6 +35,7 @@ fn finalize(candidate: &crate::rules::ProblemCandidate) -> Problem {
         problem::STEAM_PROTON_MISSING => "No Proton runtime was detected",
         problem::STEAM_LIBRARY_UNREADABLE => "A Steam library could not be read",
         problem::GAMEMODE_DAEMON_UNAVAILABLE => "GameMode daemon is unavailable",
+        problem::CPU_GOVERNOR_POWERSAVE => "CPU governor is set to powersave",
         _ => "A diagnostic rule reported a problem",
     };
 
@@ -53,6 +54,7 @@ fn severity_for(id: &ProblemId) -> Severity {
         problem::VULKAN_UNAVAILABLE => Severity::Critical,
         problem::STEAM_PROTON_MISSING | problem::STEAM_LIBRARY_UNREADABLE => Severity::Medium,
         problem::GAMEMODE_DAEMON_UNAVAILABLE => Severity::Low,
+        problem::CPU_GOVERNOR_POWERSAVE => Severity::High,
         _ => {
             debug_assert!(false, "missing severity for ProblemId: {id:?}");
             Severity::Medium
@@ -63,7 +65,7 @@ fn severity_for(id: &ProblemId) -> Severity {
 fn recommendation_for(id: &ProblemId) -> Recommendation {
     match *id {
         problem::VULKAN_UNAVAILABLE => Recommendation {
-            text: "Vulkan is not available.".to_owned(),
+            text: "GameDoc could not verify Vulkan support because vulkaninfo was not installed or did not report a working Vulkan device.".to_owned(),
             platform_specific: BTreeMap::from([
                 ("arch".to_owned(), "pacman -S vulkan-tools".to_owned()),
                 ("fedora".to_owned(), "dnf install vulkan-tools".to_owned()),
@@ -82,7 +84,7 @@ fn recommendation_for(id: &ProblemId) -> Recommendation {
             docs_url: Some("https://wiki.archlinux.org/title/Vulkan".to_owned()),
         },
         problem::STEAM_PROTON_MISSING => Recommendation {
-            text: "No Proton runtime was detected.".to_owned(),
+            text: "Without a Proton runtime, Steam cannot launch Windows games through its Linux compatibility layer.".to_owned(),
             platform_specific: BTreeMap::from([
                 ("arch".to_owned(), "pacman -S steam".to_owned()),
                 (
@@ -99,7 +101,7 @@ fn recommendation_for(id: &ProblemId) -> Recommendation {
             ),
         },
         problem::STEAM_LIBRARY_UNREADABLE => Recommendation {
-            text: "A Steam library could not be read. Check filesystem permissions on the library mount.".to_owned(),
+            text: "GameDoc could not inspect this library, so installed games and compatibility tools may be missing from the report. Check the mount and grant your user read access.".to_owned(),
             platform_specific: BTreeMap::new(),
             difficulty: 2,
             est_minutes: 5,
@@ -108,13 +110,43 @@ fn recommendation_for(id: &ProblemId) -> Recommendation {
             docs_url: None,
         },
         problem::GAMEMODE_DAEMON_UNAVAILABLE => Recommendation {
-            text: "Feral GameMode daemon is not running. Start it with sudo systemctl enable --now gamemoded.".to_owned(),
+            text: "GameMode cannot apply its performance profile while the daemon is unavailable. Enable and start the service before launching a game.".to_owned(),
             platform_specific: BTreeMap::new(),
             difficulty: 2,
             est_minutes: 2,
             requires_root: true,
             requires_reboot: false,
             docs_url: None,
+        },
+        problem::CPU_GOVERNOR_POWERSAVE => Recommendation {
+            text: "The 'powersave' governor keeps the CPU at its lowest clock speed even under heavy load. Switching to 'schedutil' or 'performance' allows the CPU to reach full speed and improves game performance.".to_owned(),
+            platform_specific: BTreeMap::from([
+                (
+                    "arch".to_owned(),
+                    "echo schedutil | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor".to_owned(),
+                ),
+                (
+                    "fedora".to_owned(),
+                    "echo schedutil | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor".to_owned(),
+                ),
+                (
+                    "debian".to_owned(),
+                    "echo schedutil | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor".to_owned(),
+                ),
+                (
+                    "ubuntu".to_owned(),
+                    "echo schedutil | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor".to_owned(),
+                ),
+                (
+                    "nixos".to_owned(),
+                    "powerManagement.cpuFreqGovernor = \"schedutil\"; # in configuration.nix".to_owned(),
+                ),
+            ]),
+            difficulty: 1,
+            est_minutes: 1,
+            requires_root: true,
+            requires_reboot: false,
+            docs_url: Some("https://wiki.archlinux.org/title/CPU_frequency_scaling".to_owned()),
         },
         _ => {
             debug_assert!(false, "missing recommendation for ProblemId: {id:?}");
@@ -163,6 +195,7 @@ mod tests {
             problem::STEAM_PROTON_MISSING,
             problem::STEAM_LIBRARY_UNREADABLE,
             problem::GAMEMODE_DAEMON_UNAVAILABLE,
+            problem::CPU_GOVERNOR_POWERSAVE,
         ];
         for id in problem_ids {
             let rec = super::recommendation_for(&id);
