@@ -30,4 +30,4 @@ all = "warn"
 pedantic = "warn"
 
 [dev-dependencies]
-jsonschema = "0.17"
+jsonschema = "0.49"
