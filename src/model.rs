@@ -206,6 +206,40 @@ pub struct Trace {
             .find(|f| f.id == crate::ids::fact::DISTRO_FAMILY)
             .and_then(|f| f.value.as_str())
     }
+
+    #[must_use]
+    pub fn gaming_score(&self) -> u32 {
+        let mut score: i32 = 100;
+        for problem in &self.problems {
+            let delta = match problem.severity {
+                Severity::Critical => 25,
+                Severity::High => 10,
+                Severity::Medium => 5,
+                Severity::Low => 2,
+                Severity::Informational => 0,
+            };
+            score -= delta;
+        }
+        if let Ok(checks_len) = i32::try_from(self.checks.len()) {
+            score -= checks_len;
+        }
+        if score < 0 {
+            0
+        } else {
+            score.unsigned_abs()
+        }
+    }
+
+    #[must_use]
+    pub fn gaming_status(&self) -> &'static str {
+        match self.gaming_score() {
+            95..=100 => "Excellent Linux Gaming Environment",
+            80..=94 => "Ready for Linux Gaming",
+            60..=79 => "Gaming Ready — Minor Issues",
+            40..=59 => "Needs Attention",
+            _ => "Gaming Environment Has Critical Issues",
+        }
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
