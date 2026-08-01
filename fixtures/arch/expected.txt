@@ -12,6 +12,8 @@
 [36mKernel      [0m  6.9.0-test
 [36mGPU         [0m  Example GPU Model 1
 [36mDriver      [0m  4.6 Mesa 24.1
+[36mGovernor    [0m  performance
+[36mSession     [0m  wayland
 
 [1mGaming[0m
 [90m----------------------------------------------[0m
